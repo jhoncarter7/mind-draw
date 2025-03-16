@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "mind-draw",
   "private": true,
   "scripts": {
     "build": "turbo run build",
