@@ -139,6 +139,7 @@ const ChatController = async (
       },
     });
 
+    
     if (!chatResponse) {
       res.status(400).send({
         message: "server side issue",
