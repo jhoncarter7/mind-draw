@@ -166,9 +166,9 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
     }
     const lastFifteenChattRes = await prismaClient.chat.findMany({
       where: {
-        roomId,
+         roomId,
       },
-      take: 15,
+      take: 50,
       orderBy: {
         createdAt: "desc",
       },
