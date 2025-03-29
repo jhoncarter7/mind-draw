@@ -185,4 +185,36 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
     console.error(error);
   }
 };
+
+
+const getRoomId = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {slug} = req.params;
+    if (!slug) {
+      res.status(400).send({
+        message: "fill all input",
+      });
+      return;
+    }
+    const room = await prismaClient.room.findFirst({
+      where: {
+         slug,
+      },
+      
+    });
+    if (!room) {
+      res.status(400).send({
+        message: "server side issue",
+      });
+      return;
+    }
+    res.status(200).json(room);
+    next();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+
 export { signin, signup, createRoom, ChatController, getLastChat };
