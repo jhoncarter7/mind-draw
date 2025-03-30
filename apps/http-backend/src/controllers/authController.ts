@@ -164,7 +164,7 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
       });
       return;
     }
-    const lastFifteenChattRes = await prismaClient.chat.findMany({
+    const lastFiftyChattRes = await prismaClient.chat.findMany({
       where: {
          roomId,
       },
@@ -173,13 +173,13 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
         createdAt: "desc",
       },
     });
-    if (!lastFifteenChattRes) {
+    if (!lastFiftyChattRes) {
       res.status(400).send({
         message: "server side issue",
       });
       return;
     }
-    res.status(200).json(lastFifteenChattRes);
+    res.status(200).json(lastFiftyChattRes);
     next();
   } catch (error) {
     console.error(error);
@@ -217,4 +217,4 @@ const getRoomId = async (req: Request, res: Response, next: NextFunction) => {
 
 
 
-export { signin, signup, createRoom, ChatController, getLastChat };
+export { signin, signup, createRoom, ChatController, getLastChat, getRoomId };
