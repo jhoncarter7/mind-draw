@@ -42,7 +42,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
       });
       return;
     }
-    const response = await prismaClient.user.findFirst({
+    const response = await prismaClient?.user?.findFirst({
       where: { email: parsedBody?.data?.email },
     });
     if (!response || response == null) {
