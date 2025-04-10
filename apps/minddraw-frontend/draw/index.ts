@@ -22,19 +22,19 @@ export const initDraw = async (
   sockets: WebSocket | null
 ) => {
   const ctx = canvas.getContext("2d");
-// 
+  //
   const existingShape: Shape[] = await getExistingShape(roomId);
   if (!ctx) {
     return;
   }
   if (sockets) {
     sockets.onmessage = (event) => {
-        const parseData = JSON.parse(event.data)
-        if(parseData.type === "chat"){
-            const parseShape = JSON.parse(parseData.message)
-            existingShape.push(parseShape)
-            clearAndDraw(existingShape, ctx, canvas);
-        }
+      const parseData = JSON.parse(event.data);
+      if (parseData.type === "chat") {
+        const parseShape = JSON.parse(parseData.message);
+        existingShape.push(parseShape.shape);
+        clearAndDraw(existingShape, ctx, canvas);
+      }
     };
   }
   clearAndDraw(existingShape, ctx, canvas);
@@ -52,13 +52,24 @@ export const initDraw = async (
     drawStart = false;
     const width = e.clientX - startX;
     const height = e.clientY - startY;
-    existingShape.push({
+    const shape: Shape = {
       type: "rect",
       x: startX,
       y: startY,
       width,
       height,
-    });
+    };
+    console.log("mouse up");
+    existingShape.push(shape);
+    sockets?.send(
+      JSON.stringify({
+        type: "chat",
+        message: JSON.stringify({
+          shape,
+        }),
+        roomId,
+      })
+    );
   });
   canvas.addEventListener("mousemove", (e) => {
     if (drawStart) {
@@ -79,7 +90,6 @@ export const clearAndDraw = (
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "rgb(0, 0, 0)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   existingShape.map((shape) => {
     if (shape.type === "rect") {
       ctx.strokeStyle = "rgb(255, 255, 255)";
@@ -89,13 +99,17 @@ export const clearAndDraw = (
 };
 
 export const getExistingShape = async (roomId: string) => {
-  const res = await axios.get(`${BACKEND_URL}/api/v1/lastChat/${roomId}`);
-  const messages = res.data;
-  console.log("messs", messages)
-  const shapes = messages.map((x: { message: string }) => {
-    const parsedData = JSON.parse(x.message);
-    return parsedData;
+  const res = await axios.get(`${BACKEND_URL}/api/v1/lastChat/${roomId}`, {
+    withCredentials: true,
   });
-  console.log("shapes", shapes)
+  const messages = res.data;
+  const shapes = messages.map((x: { message: string }) => {
+    const messageData = JSON.parse(x.message);
+    console.log("messs", messageData);
+    // const parsedData = JSON.parse(messageData.shape);
+    // if( parsedData.length > 0){}
+    return messageData.shape;
+  });
+  console.log("shapes", shapes);
   return shapes;
 };

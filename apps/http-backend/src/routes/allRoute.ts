@@ -6,7 +6,7 @@ const route: Router = express.Router()
 
 route.post("/create-room",authMiddleware, createRoom)
 route.post("/chat/:roomId", authMiddleware, ChatController)
-route.get("/lastChat/:roomId", getLastChat)
+route.get("/lastChat/:roomId",   getLastChat)
 route.get("/chat/:slug", getRoomId)
 
 export default route

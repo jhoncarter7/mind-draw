@@ -13,6 +13,8 @@ const Signin = () => {
       const res = await axios.post(`${BACKEND_URL}/api/v1/auth/signin`, {
         email,
         password,
+      }, {
+        withCredentials: true
       });
 
       console.log(res);

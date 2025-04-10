@@ -4,12 +4,9 @@ import { prismaClient } from "@repo/db/client";
 const wss = new WebSocketServer({ port: 8080 });
 
 // features to add
-// 1. Now anyone can send message to any room , add auth to verify to first join the room than send 
+// 1. Now anyone can send message to any room , add auth to verify to first join the room than send
 // 2 we are not persistance to db so when we send msg store in queue and than send to db or somthing like that
-// certain people can join certain room like criteria wise 
-
-
-
+// certain people can join certain room like criteria wise
 
 interface User {
   userId: string;
@@ -64,17 +61,17 @@ wss.on("connection", function connection(ws, request) {
       user.rooms = user?.rooms.filter((x) => x === parsedData.room);
     }
     if (parsedData.type === "chat") {
+      console.log("ws roomid", parsedData)
       const roomId = parsedData.roomId;
       const message = parsedData.message;
-     
-    const resp =     await prismaClient.chat.create({
-          data:{
-            roomId,
-            message,
-            userId
-          }
-         })
-console.log("chatres", resp)
+      const resp = await prismaClient.chat.create({
+        data: {
+          roomId: Number(roomId),
+          message,
+          userId,
+        },
+      });
+      console.log("chatres", resp);
       users?.forEach((user) => {
         if (user?.rooms?.includes(roomId)) {
           user?.ws.send(
