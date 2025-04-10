@@ -1,13 +1,13 @@
 "use client";
 import Button from "@/ui/Button";
-import Input from "@/ui/Input";
+import Input from "@repo/ui/Input";
 import Link from "next/link";
 import React, { useState } from "react";
 
 interface authPageIF {
   isSignin: boolean;
   heading?: string;
-  submitHandler: (email: string, password: string) => void;
+  submitHandler: (email: string, password: string, userName?: string) => void;
 }
 
 const AuthPage: React.FC<authPageIF> = ({
@@ -15,11 +15,12 @@ const AuthPage: React.FC<authPageIF> = ({
   heading,
   submitHandler,
 }) => {
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    submitHandler(email, password);
+    submitHandler(email, password, userName);
   };
   return (
     <div className="flex justify-center items-center h-screen ">
@@ -29,6 +30,11 @@ const AuthPage: React.FC<authPageIF> = ({
       >
         <h1 className="font-semibold text-xl">{heading}</h1>
 
+       {!isSignin && <Input
+          type="text"
+          placeholder="your username"
+          onChange={(e) => setUserName(e.target.value)}
+        />}
         <Input
           type="email"
           placeholder="your email"

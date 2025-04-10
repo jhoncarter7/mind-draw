@@ -1,19 +1,37 @@
-
-"use client"
-import AuthPage from '@/components/AuthPage'
-import React from 'react'
+"use client";
+import { BACKEND_URL } from "@/app/config";
+import AuthPage from "@/components/AuthPage";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 const Signin = () => {
-    const submitHandler = async(email: string, password: string)=> {
-       console.log(email, password)
-    }
-  return (
-    <div className='h-screen '>
-        <div>
-        <AuthPage isSignin={true} heading="Login" submitHandler={submitHandler}/>
-        </div>
-    </div>
-  )
-}
+  const router = useRouter();
 
-export default Signin
+  const submitHandler = async (email: string, password: string) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/api/v1/auth/signin`, {
+        email,
+        password,
+      });
+
+      console.log(res);
+      if (res.status === 200) {
+        router.push("/joinRoom");
+      } else {
+        alert("Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Signin error:", error);
+      alert("An error occurred during sign in");
+    }
+  };
+
+  return (
+    <div className="h-screen">
+      <AuthPage isSignin={true} heading="Login" submitHandler={submitHandler} />
+    </div>
+  );
+};
+
+export default Signin;

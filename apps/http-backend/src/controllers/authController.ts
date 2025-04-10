@@ -5,11 +5,12 @@ import { CreateUserSchema, CreateRoomSchema, SigninSchema } from "@repo/common/t
 import bcrypt from "bcryptjs";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
-  console.log("req.body", req.body);
+ 
   const parsedBody = CreateUserSchema.safeParse(req.body);
-
+  console.log("req.body", parsedBody);
   try {
     if (!parsedBody.success) {
+      console.log("req.body", req.body);
       return next(new Error("fill all input"));
     }
     const hashedPass = bcrypt.hashSync(
@@ -164,6 +165,7 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
       });
       return;
     }
+    console.log("roome detail awaiting")
     const lastFiftyChattRes = await prismaClient.chat.findMany({
       where: {
          roomId,
@@ -173,7 +175,8 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
         createdAt: "desc",
       },
     });
-    if (!lastFiftyChattRes) {
+    console.log("got called", lastFiftyChattRes)
+        if (!lastFiftyChattRes) {
       res.status(400).send({
         message: "server side issue",
       });
@@ -189,19 +192,23 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
 
 const getRoomId = async (req: Request, res: Response, next: NextFunction) => {
   try {
+   
     const {slug} = req.params;
+   
     if (!slug) {
       res.status(400).send({
-        message: "fill all input",
+        message: `${slug}`,
       });
       return;
     }
+   
     const room = await prismaClient.room.findFirst({
       where: {
          slug,
       },
       
     });
+    
     if (!room) {
       res.status(400).send({
         message: "server side issue",

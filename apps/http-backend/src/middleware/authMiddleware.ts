@@ -8,7 +8,7 @@ export const authMiddleware = async (
 ) => {
   // console.log("req.headers", req.headers);
   // console.log("req.cookies", req.cookies);
-  const token = req.cookies.accesToken || req.headers["authorization"]?.split(" ")[1];
+  const token = req.cookies?.accesToken || req.headers["authorization"]?.split(" ")[1];
 
   try {
     if (!token || process.env.Auth_JWT_KEY == undefined) {
