@@ -84,7 +84,7 @@ export class Game {
       this.mouseupTrigger = true;
     });
     this.canvas.addEventListener("mouseup", (e) => {
-      console.log("mouse up", this.mouseupTrigger);
+   
       this.drawStart = false;
       const width = e.clientX - this.startX;
       const height = e.clientY - this.startY;
@@ -108,6 +108,16 @@ export class Game {
           })
         );
       }
+      this.canvas.addEventListener("mousemove", (e) => {
+        console.log("mousemove");
+          if (this.drawStart) {
+            const width = e.clientX - this.startX;
+            const height = e.clientY - this.startY;
+            this.clearAndDraw();
+            this.ctx.strokeStyle = "rgb(255, 255, 255)";
+            this.ctx.strokeRect(this.startX, this.startY, width, height);
+          }
+        });
       // ctx.beginPath();
       // ctx.arc(100, 75, 50, 0, 2 * Math.PI);
       // ctx.stroke();
