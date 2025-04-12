@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",
     "axios": "^1.8.4",
+    "framer-motion": "^12.6.3",
+    "lucide-react": "^0.487.0",
     "next": "15.2.4",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "@repo/typescript-config": "workspace:*"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

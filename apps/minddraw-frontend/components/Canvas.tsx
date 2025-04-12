@@ -1,6 +1,7 @@
 "use client";
-import { initDraw } from "@/draw";
+// import { initDraw } from "@/draw";
 import React, { useEffect, useRef } from "react";
+import { Game } from "./Game";
 
 const Canvas = ({
   roomId,
@@ -14,10 +15,17 @@ const Canvas = ({
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
-      initDraw(canvas, roomId, sockets);
+      new Game(canvas, roomId, sockets);
+      // initDraw();
     }
-  });
-  return <canvas ref={canvasRef} width={1700} height={750}></canvas>;
+  }, [canvasRef]);
+  return (
+    <canvas
+      ref={canvasRef}
+      width={window.innerWidth}
+      height={window.innerHeight}
+    ></canvas>
+  );
 };
 
 export default Canvas;
