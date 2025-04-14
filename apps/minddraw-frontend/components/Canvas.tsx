@@ -25,7 +25,9 @@ const Canvas = ({
     const g =  new Game(canvas, roomId, sockets);
       setGame(g)
       // initDraw();
-      
+      return () =>{
+        g.destroy()
+      }
     }
   }, [canvasRef]);
   return (
