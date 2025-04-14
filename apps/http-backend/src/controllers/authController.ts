@@ -175,7 +175,7 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
         createdAt: "desc",
       },
     });
-    console.log("got called", lastFiftyChattRes)
+   
         if (!lastFiftyChattRes) {
       res.status(400).send({
         message: "server side issue",
