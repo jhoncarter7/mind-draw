@@ -20,8 +20,8 @@ const TopBar = ({ selectedTool, setSelectedTool }) => {
           onClick={() => setSelectedTool("rect")}
         />
         <Pen
-          className={`${selectedTool == "pencile" ? "text-red-500" : ""} `}
-          onClick={() => setSelectedTool("pencile")}
+          className={`${selectedTool == "pencil" ? "text-red-500" : ""} `}
+          onClick={() => setSelectedTool("pencil")}
         />
         <Diamond
           className={`${selectedTool == "diamond" ? "text-red-500" : ""} `}
