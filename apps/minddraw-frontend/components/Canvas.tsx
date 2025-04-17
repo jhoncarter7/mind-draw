@@ -1,7 +1,7 @@
 "use client";
 // import { initDraw } from "@/draw";
 import React, { useEffect, useRef, useState } from "react";
-import { Game } from "./Game";
+import { Game } from "../draw/Game";
 import TopBar from "./TopBar";
 
 export type Tool = "rect" | "circle" | "pencil";

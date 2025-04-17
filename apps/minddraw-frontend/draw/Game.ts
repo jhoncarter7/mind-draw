@@ -1,6 +1,6 @@
 // import { getExistingShape } from "@/http.ts";
 
-import { Tool } from "./Canvas";
+import { Tool } from "../components/Canvas";
 import { getExistingShape } from "./http";
 
 type Shape =
