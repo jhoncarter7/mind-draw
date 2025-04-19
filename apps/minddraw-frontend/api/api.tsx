@@ -14,3 +14,21 @@ export const roomId = async (roomCode:string) => {
         console.error("Failed to join room. Please try again.");
       }
 }
+
+export const createRoom = async(slug: string)=> {
+  try {
+    const res = await axios.post(`${BACKEND_URL}/api/v1/create-room`, {
+      slug
+    }, {
+      withCredentials: true
+    })
+    if(res.status === 201){
+      return res.data.id
+    }
+    return null;  
+  } catch (error) {
+    
+    console.error("Failed to create room. Please try again.");
+    return null;
+  }
+}

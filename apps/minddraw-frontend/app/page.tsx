@@ -11,6 +11,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white">
+       
       <Head>
         <title>Canvas Nova - Next Generation Drawing Platform</title>
         <meta

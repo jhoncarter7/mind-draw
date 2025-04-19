@@ -1,11 +1,14 @@
 import { json, NextFunction, Request, response, Response } from "express";
 import { prismaClient } from "@repo/db/client";
 import jwt from "jsonwebtoken";
-import { CreateUserSchema, CreateRoomSchema, SigninSchema } from "@repo/common/types";
+import {
+  CreateUserSchema,
+  CreateRoomSchema,
+  SigninSchema,
+} from "@repo/common/types";
 import bcrypt from "bcryptjs";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
- 
   const parsedBody = CreateUserSchema.safeParse(req.body);
   console.log("req.body", parsedBody);
   try {
@@ -99,6 +102,15 @@ const createRoom = async (req: Request, res: Response, next: NextFunction) => {
       });
       return;
     }
+    const isSlugExist = await prismaClient.room.findUnique({
+      where: { slug: parsedBody?.data?.slug as string },
+    });
+    if(isSlugExist){
+      res.status(403).json({
+        message: "room already exist"
+      })
+      return
+    }
     const response = await prismaClient.room.create({
       data: {
         slug: parsedBody?.data?.slug as string,
@@ -117,7 +129,7 @@ const createRoom = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// 
+//
 const ChatController = async (
   req: Request,
   res: Response,
@@ -140,7 +152,6 @@ const ChatController = async (
       },
     });
 
-    
     if (!chatResponse) {
       res.status(400).send({
         message: "server side issue",
@@ -165,18 +176,18 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
       });
       return;
     }
-    console.log("roome detail awaiting")
+    console.log("roome detail awaiting");
     const lastFiftyChattRes = await prismaClient.chat.findMany({
       where: {
-         roomId,
+        roomId,
       },
       take: 50,
       orderBy: {
         createdAt: "desc",
       },
     });
-   
-        if (!lastFiftyChattRes) {
+
+    if (!lastFiftyChattRes) {
       res.status(400).send({
         message: "server side issue",
       });
@@ -189,26 +200,23 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-
 const getRoomId = async (req: Request, res: Response, next: NextFunction) => {
   try {
-   
-    const {slug} = req.params;
-   
+    const { slug } = req.params;
+
     if (!slug) {
       res.status(400).send({
         message: `${slug}`,
       });
       return;
     }
-   
+
     const room = await prismaClient.room.findFirst({
       where: {
-         slug,
+        slug,
       },
-      
     });
-    
+
     if (!room) {
       res.status(400).send({
         message: "server side issue",
@@ -221,7 +229,5 @@ const getRoomId = async (req: Request, res: Response, next: NextFunction) => {
     console.error(error);
   }
 };
-
-
 
 export { signin, signup, createRoom, ChatController, getLastChat, getRoomId };
