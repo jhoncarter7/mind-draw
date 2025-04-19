@@ -6,6 +6,7 @@ export const getExistingShape = async (roomId: string) => {
       withCredentials: true,
     });
     const messages = res.data;
+    console.log("message", messages)
     const shapes = messages.map((x: { message: string }) => {
       const messageData = JSON.parse(x.message);
    

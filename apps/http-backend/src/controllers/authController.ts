@@ -176,7 +176,7 @@ const getLastChat = async (req: Request, res: Response, next: NextFunction) => {
       });
       return;
     }
-    console.log("roome detail awaiting");
+  
     const lastFiftyChattRes = await prismaClient.chat.findMany({
       where: {
         roomId,

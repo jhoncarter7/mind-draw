@@ -28,8 +28,8 @@ const TopBar = ({ selectedTool, setSelectedTool }) => {
           onClick={() => setSelectedTool("diamond")}
         />
         <MoveRight
-          className={`${selectedTool == "rightarrow" ? "text-red-500" : ""} `}
-          onClick={() => setSelectedTool("rightarrow")}
+          className={`${selectedTool == "arrow" ? "text-red-500" : ""} `}
+          onClick={() => setSelectedTool("arrow")}
         />
       </div>
     </div>

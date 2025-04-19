@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { WS_URL } from "@/app/config";
 
-const RoomCanvas = ({ roomId }: { roomId: string }) => {
+const RoomCanvas = ({ roomId, token }: { roomId: string, token: string }) => {
   const [sockets, setSockets] = useState<WebSocket | null>(null);
 
   useEffect(() => {
-    const token  = localStorage.getItem('accesToken')|| "";
+    console.log("token", token)
     const ws = new WebSocket(`${WS_URL}?token=${token}`);
     ws.onopen = () => {
       setSockets(ws);

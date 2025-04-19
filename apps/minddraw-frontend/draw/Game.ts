@@ -20,6 +20,13 @@ type Shape =
   | {
       type: "pencil";
       points: { x: number; y: number }[];
+    }
+  | {
+      type: "arrow";
+      startX: number,
+      startY: number,
+      endX: number,
+      endY: number
     };
 
 export class Game {
@@ -112,12 +119,12 @@ export class Game {
       }
     });
   }
-  setTool(tool: "circle" | "rect" | "pencil") {
+  setTool(tool: "circle" | "rect" | "pencil"| "arrow") {
     this.selectedTool = tool;
   }
 
   handleMouseDown = (e: MouseEvent) => {
-    console.log("down", e.pageX, this.canvas.offsetLeft);
+    
     this.drawStart = true;
     this.startX = e.clientX;
     this.startY = e.clientY;
@@ -164,11 +171,21 @@ export class Game {
         }
       }
       this.currentPath = null;
+    } else if (this.selectedTool === "arrow") {
+      shape = {
+        type: "arrow",
+        startX: this.startX,
+        startY: this.startY,
+        endX,
+        endY
+      }
     }
     if (!shape) {
       return;
     }
+    console.log("shape", this.selectedTool)
     this.existingShape.push(shape);
+    console.log("existingShape", this.sockets)
     this.sockets?.send(
       JSON.stringify({
         type: "chat",
@@ -185,7 +202,7 @@ export class Game {
       const height = e.clientY - this.startY;
       const currentX = e.pageX - this.canvas.offsetLeft;
       const currentY = e.pageY - this.canvas.offsetTop;
-      console.log("mouse move", this.selectedTool);
+
       if (this.selectedTool === "pencil" && this.currentPath) {
         this.currentPath.push({ x: currentX, y: currentY });
       }
@@ -207,12 +224,17 @@ export class Game {
         if (this.currentPath && this.currentPath.length > 0) {
           this.ctx.beginPath();
           this.ctx.moveTo(this.currentPath[0].x, this.currentPath[0].y);
-          console.log("pencile start", this.currentPath, this.currentPath);
+     
           for (let i = 1; i < this.currentPath.length; i++) {
             this.ctx.lineTo(this.currentPath[i].x, this.currentPath[i].y);
           }
           this.ctx.stroke();
         }
+      } else if (this.selectedTool === "arrow") {
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.startX, this.startY);
+        this.ctx.lineTo(currentX, currentY);
+        this.ctx.stroke();
       }
     }
   };
