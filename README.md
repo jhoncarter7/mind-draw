@@ -2,7 +2,8 @@
 
 This Turborepo starter is maintained by the Turborepo core team.
 
-![image](https://github.com/user-attachments/assets/18b8a0f5-cbc4-4a78-81ec-975d208d4f09)
+![image](https://github.com/user-attachments/assets/536f2cd8-7aaf-4278-b1c2-ca47cd97ad65)
+
 
 ![image](https://github.com/user-attachments/assets/98af0be4-62fb-45c4-9889-cf583dca4057)
 
